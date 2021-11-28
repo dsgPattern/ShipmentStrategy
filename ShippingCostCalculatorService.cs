@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ShipmentStrategy
 {
@@ -23,6 +24,27 @@ namespace ShipmentStrategy
             }
         }
 
+        double CalculateForFedEx(Order order)
+        {
+            const double maxFreeSize = 2;
+            const double maxFreeWeight = 10;
+            const double pricePerKg = 1;
+            const double pricePerSquareMeter = 2;
+
+            double total = 20;
+            if (order.GetTotalWeight() > maxFreeWeight)
+            {
+                total += (order.GetTotalWeight() - maxFreeWeight) * pricePerKg;
+            }
+
+            if (order.GetTotalsize() > maxFreeSize)
+            {
+                total += (order.GetTotalsize() - maxFreeSize) * pricePerSquareMeter;
+            }
+
+            return total;
+        }
+
         double CalculateForUSPS(Order order)
         {
             return 3.00d;
@@ -33,10 +55,6 @@ namespace ShipmentStrategy
             return 4.25d;
         }
 
-        double CalculateForFedEx(Order order)
-        {
-            return 5.00d;
-        }
 
     }
 }
